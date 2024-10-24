@@ -1,7 +1,8 @@
 package com.example.universalpetcare.controller;
 
 import com.example.universalpetcare.model.User;
-import com.example.universalpetcare.service.UserService;
+import com.example.universalpetcare.request.RegistrationRequest;
+import com.example.universalpetcare.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,8 +16,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public void add(@RequestBody User user)
+    public User add(@RequestBody RegistrationRequest request)
     {
-        userService.add(user);
+        return userService.add(request);
     }
 }
