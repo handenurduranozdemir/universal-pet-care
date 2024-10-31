@@ -35,7 +35,7 @@ public class UserController {
             User theUser = userService.register(request);
             UserDto registeredUser = entityConverter.mapEntityToDto(theUser, UserDto.class);
 
-            return  ResponseEntity.ok(new ApiResponse(FeedBackMessages.SUCCESS, registeredUser));
+            return  ResponseEntity.ok(new ApiResponse(FeedBackMessages.CREATE_SUCCESS, registeredUser));
         } catch (UserAlreadyExistsException e) {
             return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(), null));
         } catch (Exception e) {
@@ -64,7 +64,7 @@ public class UserController {
       try {
          User user = userService.findById(userId);
          UserDto theUser = entityConverter.mapEntityToDto(user, UserDto.class);
-         return ResponseEntity.status(FOUND).body(new ApiResponse(FeedBackMessages.FOUND, theUser));
+         return ResponseEntity.status(FOUND).body(new ApiResponse(FeedBackMessages.RESOURCE_FOUND, theUser));
       } catch (ResourceNotFoundException e) {
           return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
       } catch (Exception e) {
@@ -89,6 +89,6 @@ public class UserController {
     public ResponseEntity<ApiResponse> getAllUsers()
     {
         List<UserDto> theUsers = userService.getAllUsers();
-        return ResponseEntity.ok(new ApiResponse(FeedBackMessages.FOUND, theUsers));
+        return ResponseEntity.ok(new ApiResponse(FeedBackMessages.RESOURCE_FOUND, theUsers));
     }
 }

@@ -13,6 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Entity
@@ -20,7 +21,7 @@ import java.util.Random;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "patient", "veterinarian"})
+@JsonIgnoreProperties({"patient", "veterinarian"})
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,11 +49,14 @@ public class Appointment {
     @ManyToOne(fetch = FetchType.LAZY)
     private User veterinarian;
 
+    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL)
+    List<Pet> pets = new ArrayList<>();
+
     public void addPatient(User sender)
     {
         this.setPatient(sender);
         if(sender.getAppointments() == null) {
-            sender.setAppointments(new ArrayList<Appointment>());
+            sender.setAppointments(new ArrayList<>());
         }
         sender.getAppointments().add(this);
     }
@@ -61,7 +65,7 @@ public class Appointment {
     {
         this.setVeterinarian(recipient);
         if(recipient.getAppointments() == null) {
-            recipient.setAppointments(new ArrayList<Appointment>());
+            recipient.setAppointments(new ArrayList<>());
         }
         recipient.getAppointments().add(this);
     }

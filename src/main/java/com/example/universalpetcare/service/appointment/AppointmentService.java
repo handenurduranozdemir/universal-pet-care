@@ -3,13 +3,17 @@ package com.example.universalpetcare.service.appointment;
 import com.example.universalpetcare.enums.AppointmentStatus;
 import com.example.universalpetcare.exceptions.ResourceNotFoundException;
 import com.example.universalpetcare.model.Appointment;
+import com.example.universalpetcare.model.Pet;
 import com.example.universalpetcare.model.User;
 import com.example.universalpetcare.repository.AppointmentRepository;
 import com.example.universalpetcare.repository.UserRepository;
 import com.example.universalpetcare.request.AppointmentUpdateRequest;
+import com.example.universalpetcare.request.BookAppointmentRequest;
+import com.example.universalpetcare.service.pet.IPetService;
 import com.example.universalpetcare.utils.FeedBackMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,11 +26,22 @@ import java.util.Optional;
 public class AppointmentService implements IAppointmentService{
     private final AppointmentRepository appointmentRepository;
     private final UserRepository userRepository;
+    private final IPetService petService;
+
+    @Transactional
     @Override
-    public Appointment createAppointment(Appointment appointment, Long senderId, Long recipientId) {
+    public Appointment createAppointment(BookAppointmentRequest request, Long senderId, Long recipientId) {
         Optional<User> sender = userRepository.findById(senderId);
         Optional<User> recipient = userRepository.findById(recipientId);
+
         if (sender.isPresent() && recipient.isPresent()) {
+
+            Appointment appointment = request.getAppointment();
+            List<Pet> pets = request.getPets();
+            pets.forEach(pet -> pet.setAppointment(appointment));
+            List<Pet> savedPets = petService.savePetForAppointment(pets);
+            appointment.setPets(savedPets);
+
             appointment.addPatient(sender.get());
             appointment.addVeterinarian(recipient.get());
             appointment.setAppointmentNo();
