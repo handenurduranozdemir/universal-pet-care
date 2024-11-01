@@ -1,7 +1,5 @@
 package com.example.universalpetcare.utils;
 
-import org.springframework.web.bind.annotation.GetMapping;
-
 public class UrlMapping {
     public static final String API = "/api/v1";
     public static final String USERS = API + "/users";
@@ -27,6 +25,13 @@ public class UrlMapping {
     public static final String DELETE_PET_BY_ID = "/pet/{petId}/delete";
     public static final String GET_PET_BY_ID = "pet/{petId}/pet";
     public static final String UPDATE_PET = "/pet/{petId}/update";
+
+    /*         PHOTO API            */
+    public static final String PHOTOS = API + "/photos";
+    public static final String UPLOAD_PHOTO = "/photo/upload";
+    public static final String UPDATE_PHOTO = "/photo/{id}/update";
+    public static final String DELETE_PHOTO = "/photo/{id}/user/{userId}delete";
+    public static final String GET_PHOTO_BY_ID = "/photo/{id}/photo";
 }
 
 
