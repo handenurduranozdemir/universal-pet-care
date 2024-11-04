@@ -3,9 +3,8 @@ package com.example.universalpetcare.controller;
 import com.example.universalpetcare.dto.EntityConverter;
 import com.example.universalpetcare.dto.UserDto;
 import com.example.universalpetcare.exceptions.ResourceNotFoundException;
-import com.example.universalpetcare.exceptions.UserAlreadyExistsException;
+import com.example.universalpetcare.exceptions.AlreadyExistsException;
 import com.example.universalpetcare.model.User;
-import com.example.universalpetcare.repository.UserRepository;
 import com.example.universalpetcare.request.RegistrationRequest;
 import com.example.universalpetcare.request.UserUpdateRequest;
 import com.example.universalpetcare.response.ApiResponse;
@@ -26,7 +25,6 @@ import static org.springframework.http.HttpStatus.*;
 public class UserController {
     private final UserService userService;
     private final EntityConverter<User, UserDto> entityConverter;
-    private final UserRepository userRepository;
 
     @PostMapping(UrlMapping.REGISTER_USER)
     public ResponseEntity<ApiResponse> register(@RequestBody RegistrationRequest request)
@@ -36,7 +34,7 @@ public class UserController {
             UserDto registeredUser = entityConverter.mapEntityToDto(theUser, UserDto.class);
 
             return  ResponseEntity.ok(new ApiResponse(FeedBackMessages.CREATE_SUCCESS, registeredUser));
-        } catch (UserAlreadyExistsException e) {
+        } catch (AlreadyExistsException e) {
             return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(), null));
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));

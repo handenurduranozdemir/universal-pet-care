@@ -1,6 +1,6 @@
 package com.example.universalpetcare.factory;
 
-import com.example.universalpetcare.exceptions.UserAlreadyExistsException;
+import com.example.universalpetcare.exceptions.AlreadyExistsException;
 import com.example.universalpetcare.model.User;
 import com.example.universalpetcare.repository.UserRepository;
 import com.example.universalpetcare.request.RegistrationRequest;
@@ -19,7 +19,7 @@ public class SimpleUserFactory implements UserFactory{
 
     public User createUser(RegistrationRequest registrationRequest) {
         if (userRepository.existsByEmail(registrationRequest.getEmail())) {
-            throw new UserAlreadyExistsException("Oops! " + registrationRequest.getEmail() + " already exist");
+            throw new AlreadyExistsException("Oops! " + registrationRequest.getEmail() + " already exist");
         }
 
         switch (registrationRequest.getUserType()) {
