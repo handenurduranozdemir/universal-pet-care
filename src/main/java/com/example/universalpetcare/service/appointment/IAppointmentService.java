@@ -1,5 +1,6 @@
 package com.example.universalpetcare.service.appointment;
 
+import com.example.universalpetcare.dto.AppointmentDto;
 import com.example.universalpetcare.model.Appointment;
 import com.example.universalpetcare.request.AppointmentUpdateRequest;
 import com.example.universalpetcare.request.BookAppointmentRequest;
@@ -13,4 +14,5 @@ public interface IAppointmentService {
     void deleteAppointment(Long id);
     Appointment getAppointmentById(Long id);
     Appointment getAppointmentByNo(String appointmentNo);
+    List<AppointmentDto> getUserAppointments(Long userId);
 }
